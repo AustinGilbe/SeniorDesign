@@ -1,0 +1,8 @@
+# Node.js
+llm_threat_intelligence/node_modules/
+
+# React build
+llm_threat_intelligence/frontend/build/
+
+# Environment variables
+.env

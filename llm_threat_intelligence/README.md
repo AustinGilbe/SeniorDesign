@@ -25,3 +25,7 @@ Working on any given day
 
 5. Deactivating the Environment
     "deactivate"
+
+to start front end 
+      cd frontend
+    yarn start
