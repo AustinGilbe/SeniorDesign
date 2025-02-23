@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import './styles.css';
 function App()
 {
   const [message, setMessage] = useState('');
@@ -14,26 +14,28 @@ function App()
 
   return (
     <div>
+      <div className="temp">
       <h1>Frontend Connected to Backend</h1>
       <p>Backend Response: {message}</p>
-    
-    
-    <header>
-      <nav>
+      </div>
+
+      <div className="sidebar">
+        <h2>Navigation</h2>
         <ul>
           <li><a href="#">Home</a></li>
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
-      </nav>
-    </header>
-    <main>
-      <h1>Welcome to our website!</h1>
-      <p>This is a sample website.</p>
-    </main>
-    <footer>
-      <p>&copy; 2023 Our Company</p>
-    </footer>
+      </div>
+    
+
+      <div className="main-content">
+        <h2>Main Content</h2>
+        <p>This is the main content of the website.</p>
+      </div>
+      <footer className='temp'>
+        <p>&copy; 2023 Our Company</p>
+      </footer>
   </div>
   );
 }
