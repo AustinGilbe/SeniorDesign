@@ -16,8 +16,26 @@ function App()
     <div>
       <h1>Frontend Connected to Backend</h1>
       <p>Backend Response: {message}</p>
-    </div>
+    
+    
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1>Welcome to our website!</h1>
+      <p>This is a sample website.</p>
+    </main>
+    <footer>
+      <p>&copy; 2023 Our Company</p>
+    </footer>
+  </div>
   );
 }
 
-export default App;
+export default App; 
