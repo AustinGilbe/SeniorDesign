@@ -16,13 +16,13 @@ export default function Home() {
                 <h2>Sidebar</h2>
                     <ul>
                     <Link to="/">
-                        <button className='sidebar_buttons'>Go to Home</button>
+                        <button className='sidebar_buttons' role="button"><span class="text">Home</span></button>
                     </Link>
                     <Link to="/Moniter">
-                        <button className='sidebar_buttons'>Go Moniter</button>
+                        <button className='sidebar_buttons' role="button"><span class="text">Moniter</span></button>
                     </Link>
                     <Link to="/Prompt">
-                        <button className='sidebar_buttons'>Go to Prompt</button>
+                        <button className='sidebar_buttons' role="button"><span class="text">Prompt</span></button>
                     </Link>
                     </ul>
                 </div>
