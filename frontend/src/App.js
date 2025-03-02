@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './styles.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Moniter from "./pages/Moniter";
+import Prompt from "./pages/Prompt";
 function App()
 {
   const [message, setMessage] = useState('');
+ 
 
   useEffect(() =>
   {
@@ -12,31 +17,19 @@ function App()
       .catch(error => console.error("Error fetching data:", error));
   }, []);
 
+
+
   return (
-    <div>
-      <div className="temp">
-      <h1>Frontend Connected to Backend</h1>
-      <p>Backend Response: {message}</p>
-      </div>
+    <Router>
+    <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Moniter" element={<Moniter />} />
+          <Route path="/Prompt" element={<Prompt />} />
+        </Routes>
+    </div>
+    </Router>
 
-      <div className="sidebar">
-        <h2>Navigation</h2>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
-    
-
-      <div className="main-content">
-        <h2>Main Content</h2>
-        <p>This is the main content of the website.</p>
-      </div>
-      <footer className='temp'>
-        <p>&copy; 2023 Our Company</p>
-      </footer>
-  </div>
   );
 }
 
