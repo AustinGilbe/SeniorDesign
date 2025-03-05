@@ -7,6 +7,7 @@ import '../styles.css';
 export default function Prompt() {
     //handles input from user towards the LLM
     const [text, setText] = React.useState('');
+    const [responseText, setResponseText] = React.useState('');
 
     const handleKeyDown = async (event) => {
       if (event.key === 'Enter') {
@@ -40,13 +41,8 @@ export default function Prompt() {
     //-----------------------------------------------------------------
 
 
-    //handles LLM response
-    const [responseText, setResponseText] = React.useState('');
 
-    function handleServerResponse(response) {
-      setResponseText(response.data); 
-    }
-    //-----------------------------------------------------------------
+
 
 
     return (
