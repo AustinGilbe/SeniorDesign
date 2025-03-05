@@ -55,6 +55,9 @@ def ask_llm():
 
     if not user_query:
         return jsonify({"error": "⚠️ Query is required."}), 400
+    
+
+    print(f"Received prompt: {user_query}")
 
     try:
         # Generate response using the API instead of a local model
@@ -63,6 +66,8 @@ def ask_llm():
 
     except Exception as e:
         return jsonify({"error": f"⚠️ Internal server error: {str(e)}"}), 500
+    
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)

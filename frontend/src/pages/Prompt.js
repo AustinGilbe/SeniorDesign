@@ -10,31 +10,30 @@ export default function Prompt() {
 
     const handleKeyDown = async (event) => {
       if (event.key === 'Enter') {
-        event.preventDefault(); 
-        alert(event.target.value);
-        
+        event.preventDefault();
         try {
-          const response = await fetch('http://127.0.0.1:8000/ask_llm', {
+          const response = await fetch('http://localhost:8000/ask_llm', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({ query: text })
           });
-  
+    
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-  
+    
           const data = await response.json();
           console.log('Response from backend:', data);
-          
-  
+          setResponseText(data.response);
+    
         } catch (error) {
           console.error('Error sending message:', error);
+          setResponseText(`Error: ${error.message}`);
         }
-  
-        setText(''); 
+    
+        setText('');
       }
     };
 
@@ -81,8 +80,6 @@ export default function Prompt() {
             </div>
 
             
-
-            
             <input
               type="text"
               value={text}
@@ -97,4 +94,3 @@ export default function Prompt() {
         </div>
       );
   }
-
