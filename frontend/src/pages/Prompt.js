@@ -14,12 +14,12 @@ export default function Prompt() {
         alert(event.target.value);
         
         try {
-          const response = await fetch('http://localhost:5000/api/messages', {
+          const response = await fetch('http://127.0.0.1:8000/ask_llm', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text })
+            body: JSON.stringify({ query: text })
           });
   
           if (!response.ok) {
@@ -97,3 +97,4 @@ export default function Prompt() {
         </div>
       );
   }
+
