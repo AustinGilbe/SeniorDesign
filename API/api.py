@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 # Hugging Face API credentials (store securely as an environment variable)
-HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/gpt2"
+HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
 HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN") # Load from environment
 
 if not HUGGINGFACE_API_TOKEN:
@@ -63,5 +65,5 @@ def ask_llm():
         return jsonify({"error": f"⚠️ Internal server error: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
 
