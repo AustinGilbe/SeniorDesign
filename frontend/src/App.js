@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Moniter from "./pages/Moniter";
 import Prompt from "./pages/Prompt";
+import Input from "./pages/Input";
 function App()
 {
   const [message, setMessage] = useState('');
@@ -26,6 +27,7 @@ function App()
           <Route path="/" element={<Home />} />
           <Route path="/Moniter" element={<Moniter />} />
           <Route path="/Prompt" element={<Prompt />} />
+          <Route path="/Input" element={<Input />} />
         </Routes>
     </div>
     </Router>

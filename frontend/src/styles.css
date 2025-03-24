@@ -29,26 +29,51 @@
     position: fixed;
     left: 19.2%;
     background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    border: 1px solid transparent;
+    border-radius: 10px; /* increased border radius to create a more rounded corner */
+    box-shadow: 0 0 10px rgba(0,0,0,0.2); /* added box shadow to create a rounded corner effect */
+    border-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB) 1;
     width: 60%;
     z-index: 1000; 
     margin-left: 120px;
-  }
+}
+
+  
   .prompt-box{
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
     border-radius: 10px;
     padding: 10px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
-    width: 60%;
+    width: 940px;
+    height: 50px;
     z-index: 1000; 
-    margin-left: 120px;
-    
-  }
+    margin-left: 120px; /* removed margin-left */
+    position: fixed; 
+    bottom: 20px; 
+    left: 290px; /* changed left to 20px */
+    align-items: center;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    display: flex;
+    font-family: Phantomsans, sans-serif;
+    font-size: 20px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+}
+  
 
   .temp{
     margin-left: 220px;
@@ -109,4 +134,64 @@
     padding: 0;
     margin: 0;
     text-align: center;
+  }
+
+  #form-file-upload {
+    height: 550px; 
+    overflow-y: auto; 
+    padding: 10px;
+    position: fixed;
+    left: 19.2%;
+    background-color: #f0f0f0;
+    border: 2px solid transparent;
+    border-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.2); 
+    border-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB) 1;
+    width: 60%;
+    z-index: 1000; 
+    margin-left: 120px;
+  }
+  
+  #input-file-upload {
+    display: none;
+  }
+  
+  #label-file-upload {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 2px;
+    border-radius: 1rem;
+    border-style: dashed;
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+  }
+  
+  #label-file-upload.drag-active {
+    background-color: #ffffff;
+  }
+  
+  .upload-button {
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 1rem;
+    border: none;
+    font-family: 'Oswald', sans-serif;
+    background-color: transparent;
+  }
+  
+  .upload-button:hover {
+    text-decoration-line: underline;
+  }
+  
+  #drag-file-element {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
   }

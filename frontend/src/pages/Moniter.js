@@ -23,6 +23,9 @@ export default function Moniter() {
                     <Link to="/Prompt">
                         <button className='sidebar_buttons' role="button"><span class="text">Prompt</span></button>
                     </Link>
+                    <Link to="/Input">
+                        <button className='sidebar_buttons' role="button"><span class="text">Input</span></button>
+                    </Link>
                     </ul>
                 </div>
         </div>

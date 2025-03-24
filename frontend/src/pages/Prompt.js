@@ -10,8 +10,10 @@ export default function Prompt() {
     const [responseText, setResponseText] = React.useState('');
 
     const handleKeyDown = async (event) => {
+
       if (event.key === 'Enter') {
         event.preventDefault();
+        event.target.value = '';
         try {
           const response = await fetch('http://localhost:8000/ask_llm', {
             method: 'POST',
@@ -33,7 +35,7 @@ export default function Prompt() {
           console.error('Error sending message:', error);
           setResponseText(`Error: ${error.message}`);
         }
-    
+        
         setText('');
       }
     };
@@ -67,6 +69,9 @@ export default function Prompt() {
                 <Link to="/Prompt">
                     <button className='sidebar_buttons' role="button"><span class="text">Prompt</span></button>
                 </Link>
+                <Link to="/Input">
+                    <button className='sidebar_buttons' role="button"><span class="text">Input</span></button>
+                </Link>
                 </ul>
             </div>
 
@@ -76,6 +81,7 @@ export default function Prompt() {
             </div>
 
             
+        
             <input
               type="text"
               value={text}
@@ -84,7 +90,7 @@ export default function Prompt() {
               onKeyDown={handleKeyDown}
               placeholder="Type your message and press Enter"
             />
-            
+
             
 
         </div>
