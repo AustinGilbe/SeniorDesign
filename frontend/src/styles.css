@@ -29,7 +29,7 @@
     position: fixed;
     left: 19.2%;
     background-color: #f0f0f0;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
     border-radius: 10px; /* increased border radius to create a more rounded corner */
     box-shadow: 0 0 10px rgba(0,0,0,0.2); /* added box shadow to create a rounded corner effect */
     border-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB) 1;
