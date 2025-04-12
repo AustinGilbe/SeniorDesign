@@ -6,3 +6,5 @@ llm_threat_intelligence/frontend/build/
 
 # Environment variables
 .env
+
+venv/
