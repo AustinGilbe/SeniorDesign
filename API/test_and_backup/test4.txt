@@ -1,0 +1,11 @@
+# Step 1: Read and escape your CSV file into a JSON-safe string
+QUERY=$(perl -pe 's/"/\\"/g; s/\n/\\n/g' "../../DER Data/Logs/MITM/mitm_log_4.csv")
+
+# Step 2: Write JSON payload to a file
+echo "{\"query\": \"$QUERY\"}" > payload.json
+
+# Step 3: Send the request
+curl -X POST http://127.0.0.1:8000/ask_llm \
+     -H "Content-Type: application/json" \
+     -d @payload.json
+
