@@ -352,7 +352,7 @@ def query_openai(prompt, max_tokens=200, temperature=0.1):
     """Query OpenAI API with error handling"""
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4-turbo",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=max_tokens,
             temperature=temperature
@@ -519,7 +519,7 @@ def multi_query(log):
     
     # Run multiple queries with the smart prompt
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        futures = [executor.submit(lambda: query_openai(smart_prompt, max_tokens=250)) for _ in range(5)]
+        futures = [executor.submit(lambda: query_openai(smart_prompt, max_tokens=250)) for _ in range(3)]
         for future in concurrent.futures.as_completed(futures):
             try:
                 responses.append(future.result())
