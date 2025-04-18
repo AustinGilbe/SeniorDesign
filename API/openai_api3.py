@@ -308,6 +308,7 @@ def analyze_log_data(parsed_log):
     
     print(f"Attack scores: {attack_likelihood}")
     print(f"Most likely attack: {likely_attack}")
+    print(f"indicators: {indicators}")
     
     return {
         'analysis': f"Most likely classification: {likely_attack}",
@@ -388,8 +389,19 @@ def create_smart_prompt(log_data, analysis_results):
     likely_attack = analysis_results['likely_attack']
     
     # Get attack signatures for the likely attack
-    attack_signatures = ATTACK_SIGNATURES.get(likely_attack, {}).get('key_indicators', [])
-    signature_text = "\n".join([f"- {sig}" for sig in attack_signatures])
+    # attack_signatures = ATTACK_SIGNATURES.get(likely_attack, {}).get('key_indicators', [])
+    # signature_text = "\n".join([f"- {sig}" for sig in attack_signatures])
+    bd_sig = ATTACK_SIGNATURES.get("Battery Drain", {}).get('key_indicators', [])
+    bd_signature_text = "\n".join([f"- {sig}" for sig in bd_sig])
+    clean_sig = ATTACK_SIGNATURES.get("Clean", {}).get('key_indicators', [])
+    clean_signature_text = "\n".join([f"- {sig}" for sig in clean_sig])
+    mitm_sig = ATTACK_SIGNATURES.get("Man-in-the-Middle", {}).get('key_indicators', [])
+    mitm_signature_text = "\n".join([f"- {sig}" for sig in mitm_sig])
+    dos_sig = ATTACK_SIGNATURES.get("Denial of Service", {}).get('key_indicators', [])
+    dos_signature_text = "\n".join([f"- {sig}" for sig in dos_sig])
+    gm_sig = ATTACK_SIGNATURES.get("Grid Manipulation", {}).get('key_indicators', [])
+    gm_signature_text = "\n".join([f"- {sig}" for sig in gm_sig])
+
     
     # Get example logs
     example_logs = read_examples()
@@ -453,15 +465,32 @@ Look carefully at each metric and time pattern. ONLY select the classification t
 
 {examples_format}
 
-Initial analysis indicates potential {likely_attack} pattern with these observations:
-- Tesla charging normal: {indicators.get('tesla_charging_normal', 'Unknown')}
-- High home load detected: {indicators.get('high_home_load', 'Unknown')}
-- Daytime zero solar: {indicators.get('day_solar_missing', 'Unknown')}
-- Negative grid values: {indicators.get('negative_grid_values', 'Unknown')}
-- Energy balance errors: {indicators.get('energy_balance_errors', 'Unknown')}
+Initial analysis indicates these observations:
+- Complete data coverage: {indicators.get('complete_data', 'Unknown')}
+- Tesla charging outside normal hours: {indicators.get('tesla_charging_outside_normal', 'Unknown')}
+- High home load percentage: {indicators.get('high_home_load_pct', 'Unknown')}
+- Missing data count: {indicators.get('missing_data_count', 'Unknown')}
+- Peak hour missing data: {indicators.get('peak_hour_missing_data', 'Unknown')}
+- Multiple zeroed critical values: {indicators.get('multiple_zeroed_values', 'Unknown')}
+- Negative grid values count: {indicators.get('negative_grid_values_count', 'Unknown')}
+- High grid values count: {indicators.get('high_grid_values_count', 'Unknown')}
+- Nighttime solar generation count: {indicators.get('night_solar_count', 'Unknown')}
+- Erratic battery behavior: {indicators.get('erratic_battery', 'Unknown')}
 
-Key indicators for {likely_attack}:
-{signature_text}
+Key indicators for Battery Drain:
+{bd_signature_text}
+
+Key indicators for Denial of Service:
+{dos_signature_text}
+
+Key indicators for Grid Manipulation:
+{gm_signature_text}
+
+Key indicators for Man-in-the-Middle:
+{mitm_signature_text}
+
+Key indicators for Clean Files (no attack):
+{clean_signature_text}
 
 Based on your expertise and the example logs provided, analyze this log sample:
 {log_sample}
