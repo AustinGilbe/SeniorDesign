@@ -1,0 +1,7 @@
+# Step 1: Set the path to your CSV file
+CSV_FILE="../../Data2/logs/clean/clean_simulation_log_5.csv"
+
+# Step 2: Send the file as form data
+curl -X POST http://127.0.0.1:8000/ask_llm \
+     -F "file=@${CSV_FILE}"
+

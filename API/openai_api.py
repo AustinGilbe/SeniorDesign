@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from openai import OpenAI
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import os
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -49,7 +50,7 @@ def final_output(responses):
     prompt += (
         "\nExpected Output: "
         "Provide a concise classification and description. "
-        "For example: 'This is a Denial of Service attack. The log shows multiple failed requests and timeout errors.'\n"
+        "For example: 'Classification: Denial of Service attack.\nDescription: The log shows multiple failed requests and timeout errors.'\n"
         "Now, process the responses and generate the final classification.\n"
     )
     # Call OpenAI API for the final result based on majority voting
@@ -69,19 +70,21 @@ def multi_query(prompt):
         "Below are some example logs, both clean and under attack, along with their classifications.\n\n"
     )
 
-    in_context_prompt += f"Example of Battery Drain Attack:\n{bd_string}\nClassification: Battery Drain Attack. The log shows abnormal battery usage.\n\n"
-    in_context_prompt += f"Example of Denial of Service Attack:\n{dos_string}\nClassification: Denial of Service Attack. Multiple failed requests detected.\n\n"
-    in_context_prompt += f"Example of Grid Manipulation Attack:\n{gm_string}\nClassification: Grid Manipulation Attack. Irregular grid parameters observed.\n\n"
-    in_context_prompt += f"Example of Man-in-the-Middle Attack:\n{mitm_string}\nClassification: Man-in-the-Middle Attack. Intercepted and altered communication logs.\n\n"
-    in_context_prompt += f"Example of Clean Log (no attack):\n{clean_string}\nClassification: Clean log. No signs of attacks detected.\n\n"
+    in_context_prompt += f"Example of Battery Drain Attack:\n{bd_string}\nClassification: Battery Drain Attack. Description: The log shows abnormal battery usage.\n\n"
+    in_context_prompt += f"Example of Denial of Service Attack:\n{dos_string}\nClassification: Denial of Service Attack. Description: Multiple failed requests detected.\n\n"
+    in_context_prompt += f"Example of Grid Manipulation Attack:\n{gm_string}\nClassification: Grid Manipulation Attack. Description: Irregular grid parameters observed.\n\n"
+    in_context_prompt += f"Example of Man-in-the-Middle Attack:\n{mitm_string}\nClassification: Man-in-the-Middle Attack. Description: Intercepted and altered communication logs.\n\n"
+    in_context_prompt += f"Example of Clean Log (no attack):\n{clean_string}\nClassification: Clean log. Description: No signs of attacks detected.\n\n"
 
     in_context_prompt += "OUTPUT FORMAT: Respond with the classification and a brief description of the attack if detected, "
     in_context_prompt += "or state that the log is clean with no attack. The description should include specific reasoning.\n"
     in_context_prompt += f"Classify the following log data:\n{prompt}\n"
 
-    # Run the query 5 times for multiple responses
-    for i in range(5):
-        responses.append(query_openai(in_context_prompt))
+    # Create a ThreadPoolExecutor to run queries in parallel
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        futures = [executor.submit(query_openai, in_context_prompt) for _ in range(5)]  # 5 parallel requests
+        for future in as_completed(futures):
+            responses.append(future.result())
     return responses
 
 # Function to query OpenAI's GPT-4 API for text generation
