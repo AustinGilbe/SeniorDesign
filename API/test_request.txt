@@ -1,3 +1,0 @@
-curl -X POST http://127.0.0.1:8000/ask_llm \
-     -H "Content-Type: application/json" \
-     -d '{"query": "Tell me a haiku? Only give me the haiku, and absolutely nothing else."}'

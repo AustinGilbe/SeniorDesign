@@ -28,7 +28,7 @@ def read_examples():
     return bd_string, clean_string, dos_string, gm_string, mitm_string
 
 def final_output(responses):
-    prompt += "We have queried a model multiple times to detect cyber attacks in log data. Perform majority voting on the responses, and produce an output giving the classification and a description."
+    prompt = "We have queried a model multiple times to detect cyber attacks in log data. Perform majority voting on the responses, and produce an output giving the classification and a description."
     for i, response in enumerate(responses):
         prompt += "Response "
         prompt += str(i)
