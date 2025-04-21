@@ -641,6 +641,8 @@ def ask_llm():
         final_result = f"CLASSIFICATION: {result_dict['classification']}\nDESCRIPTION: {result_dict['description']}\nCONFIDENCE: {result_dict['confidence']}%"
         print(f"Final classification: {final_result}")
 
+        print(f"Sending response: {final_result}")
+        print(f"JSON response: {jsonify({'response': final_result})}")
         return jsonify({"response": final_result})
     
     except Exception as e:
