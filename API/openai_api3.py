@@ -613,14 +613,15 @@ def final_output(responses, analysis_results):
 
 @app.route('/ask_llm', methods=['POST'])
 def ask_llm():
-    """Handle API request with CSV file upload"""
-    if 'file' not in request.files:
-        return jsonify({"error": "⚠️ No file provided."}), 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "⚠️ Empty filename."}), 400
-
+    """Handle API request with CSV file content as JSON"""
+    if not request.is_json:
+        return jsonify({"error": "⚠️ Expected JSON data."}), 400
+    
+    data = request.get_json()
+    if 'file' not in data:
+        return jsonify({"error": "⚠️ No file content provided."}), 400
+    
+    file_contents = data['file']
     try:
         # Read and decode file content once
         file_contents = file.read().decode('utf-8')
