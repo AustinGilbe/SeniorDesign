@@ -34,7 +34,7 @@ export default function Monitor() {
         }
 
         // Then fetch and parse the CSV
-        const csvFilePath = `${process.env.PUBLIC_URL}/der_simulation_log.csv`;
+        const csvFilePath = `${process.env.PUBLIC_URL}/uploads/current/current.csv`;
         
         fetch(csvFilePath)
             .then(res => res.text())
@@ -219,23 +219,26 @@ export default function Monitor() {
                 </div>
             </div>
 
-            <div className="sidebar">
-                <h2>Sidebar</h2>
-                <ul>
-                    <Link to="/">
-                        <button className='sidebar_buttons' role="button"><span className="text">Home</span></button>
-                    </Link>
-                    <Link to="/Monitor">
-                        <button className='sidebar_buttons' role="button"><span className="text">Monitor</span></button>
-                    </Link>
-                    <Link to="/Prompt">
-                        <button className='sidebar_buttons' role="button"><span className="text">Prompt</span></button>
-                    </Link>
-                    <Link to="/Input">
-                        <button className='sidebar_buttons' role="button"><span className="text">Input</span></button>
-                    </Link>
-                </ul>
-            </div>
+      <div className="sidebar">
+        <h2>Sidebar</h2>
+        <ul>
+          <Link to="/">
+            <button className="sidebar_buttons" role="button">
+              <span className="text">Home</span>
+            </button>
+          </Link>
+          <Link to="/Moniter">
+            <button className="sidebar_buttons" role="button">
+              <span className="text">Moniter</span>
+            </button>
+          </Link>
+          <Link to="/Prompt">
+            <button className="sidebar_buttons" role="button">
+              <span className="text">Prompt</span>
+            </button>
+          </Link>
+        </ul>
+      </div>
         </div>
     );
 }

@@ -23,7 +23,7 @@
     text-align: center;
   }
   .response-box{
-    height: 550px; 
+    height: 470px; 
     overflow-y: auto; 
     padding: 10px;
     position: fixed;
@@ -137,11 +137,13 @@
   }
 
   #form-file-upload {
-    height: 550px; 
+    height: 160px; 
     overflow-y: auto; 
+    
     padding: 10px;
     position: fixed;
     left: 19.2%;
+    bottom: 10px; 
     background-color: #f0f0f0;
     border: 2px solid transparent;
     border-radius: 10px; 
@@ -195,3 +197,20 @@
     bottom: 0px;
     left: 0px;
   }
+  .csv-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed;
+    left: 50.2%;
+    margin-left: 120px;
+    width: 29%;
+    padding: 10px;
+    bottom: 10px; 
+    border: 2px solid transparent;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB) 1;
+    height: 160px;
+  }
+  
