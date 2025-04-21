@@ -623,9 +623,6 @@ def ask_llm():
     
     file_contents = data['file']
     try:
-        # Read and decode file content once
-        file_contents = file.read().decode('utf-8')
-
         # Use StringIO to simulate a file object for parsing
         decoded_file = StringIO(file_contents)
         parsed = parse_csv_log(decoded_file)
@@ -644,7 +641,7 @@ def ask_llm():
         final_result = f"CLASSIFICATION: {result_dict['classification']}\nDESCRIPTION: {result_dict['description']}\nCONFIDENCE: {result_dict['confidence']}%"
         print(f"Final classification: {final_result}")
 
-        return jsonify({"result": final_result})
+        return jsonify({"response": final_result})
     
     except Exception as e:
         return jsonify({"error": f"❌ Exception occurred: {str(e)}"}), 500
