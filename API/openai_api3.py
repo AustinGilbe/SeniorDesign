@@ -612,19 +612,19 @@ def final_output(responses, analysis_results):
     }
 
 @app.route('/ask_llm', methods=['POST'])
+@app.route('/ask_llm', methods=['POST'])
 def ask_llm():
-    """Handle API request with CSV file content as JSON"""
-    if not request.is_json:
-        return jsonify({"error": "⚠️ Expected JSON data."}), 400
-    
-    data = request.get_json()
-    if 'file' not in data:
-        return jsonify({"error": "⚠️ No file content provided."}), 400
-    
-    file_contents = data['file']
+    """Handle API request with CSV file upload"""
+    if 'file' not in request.files:
+        return jsonify({"error": "⚠️ No file uploaded."}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "⚠️ No selected file."}), 400
+
     try:
-        # Use StringIO to simulate a file object for parsing
-        decoded_file = StringIO(file_contents)
+        # Read the uploaded file
+        decoded_file = StringIO(file.read().decode('utf-8'))
         parsed = parse_csv_log(decoded_file)
 
         if parsed["row_count"] == 0:
@@ -633,7 +633,7 @@ def ask_llm():
         print(f"Received file with {parsed['row_count']} rows")
 
         # Step 1: Run multi-query with analysis
-        responses, analysis_results = multi_query(file_contents)
+        responses, analysis_results = multi_query(decoded_file.getvalue())
 
         # Step 2: Use final_output to process the responses
         result_dict = final_output(responses, analysis_results)
@@ -642,7 +642,6 @@ def ask_llm():
         print(f"Final classification: {final_result}")
 
         print(f"Sending response: {final_result}")
-        print(f"JSON response: {jsonify({'response': final_result})}")
         return jsonify({"response": final_result})
     
     except Exception as e:
