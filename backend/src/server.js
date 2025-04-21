@@ -1,7 +1,7 @@
 require('dotenv').config({ path: './.env' });
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/db');
+//const connectDB = require('./config/db');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -20,7 +20,7 @@ app.use(cors());
   });
 
 // Connect to MongoDB
-connectDB();
+//connectDB();
 
 // Basic routes
 app.get('/', (req, res) => res.send('Backend is running and connected to MongoDB!'));
