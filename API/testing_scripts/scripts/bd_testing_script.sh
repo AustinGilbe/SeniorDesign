@@ -1,4 +1,4 @@
-for i in {1..10}
+for i in {1..50}
 do
     CSV_FILE="../../Data2/Logs2/bd/bd_simulation_log_$i.csv"
     curl -s -X POST http://127.0.0.1:8000/ask_llm \
@@ -7,6 +7,6 @@ do
         split($2,a,"\\\\n"); 
         print a[1]
     }' >> output/bd_testing.txt
-    sleep 5
+    sleep 10
 done
 rm temp_response.json
