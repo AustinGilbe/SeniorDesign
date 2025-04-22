@@ -360,7 +360,7 @@ def query_openai(prompt, max_tokens=200, temperature=0.1):
         return response.choices[0].message.content.strip()
     except Exception as e:
         print(f"OpenAI API Error: {str(e)}")
-        return f"⚠️ Error: {str(e)}"
+        return f"Error: {str(e)}"
 
 def read_examples():
     paths = {
@@ -525,7 +525,7 @@ def multi_query(log):
                 responses.append(future.result())
             except Exception as e:
                 print(f"Thread error: {e}")
-                responses.append(f"⚠️ Error in thread: {str(e)}")
+                responses.append(f"Error in thread: {str(e)}")
     for i, response in enumerate(responses):
         print(f"Response {i+1}:")
         print(response)
@@ -619,7 +619,7 @@ def ask_llm():
     if request.is_json:
         data = request.get_json()
         if 'file' not in data:
-            return jsonify({"error": "⚠️ No file content provided."}), 400
+            return jsonify({"error": "No file content provided."}), 400
         
         file_contents = data['file']
         # Handle base64 encoded content
@@ -628,21 +628,21 @@ def ask_llm():
             try:
                 file_contents = base64.b64decode(file_contents).decode('utf-8')
             except Exception as e:
-                return jsonify({"error": f"⚠️ Failed to decode base64 content: {str(e)}"}), 400
+                return jsonify({"error": f"Failed to decode base64 content: {str(e)}"}), 400
     
     # Check if content is form data with file
     elif 'file' in request.files:
         file = request.files['file']
         if file.filename == '':
-            return jsonify({"error": "⚠️ No file selected."}), 400
+            return jsonify({"error": "No file selected."}), 400
         
         try:
             file_contents = file.read().decode('utf-8')
         except Exception as e:
-            return jsonify({"error": f"⚠️ Failed to read file: {str(e)}"}), 400
+            return jsonify({"error": f"Failed to read file: {str(e)}"}), 400
     
     else:
-        return jsonify({"error": "⚠️ Expected JSON data or file upload."}), 400
+        return jsonify({"error": "Expected JSON data or file upload."}), 400
     
     try:
         # Use StringIO to simulate a file object for parsing
@@ -650,7 +650,7 @@ def ask_llm():
         parsed = parse_csv_log(decoded_file)
 
         if parsed is None or parsed.get("row_count", 0) == 0:
-            return jsonify({"error": "⚠️ CSV log appears empty or invalid."}), 400
+            return jsonify({"error": "CSV log appears empty or invalid."}), 400
 
         print(f"Received file with {parsed['row_count']} rows")
 
@@ -658,7 +658,7 @@ def ask_llm():
         responses, analysis_results = multi_query(file_contents)
 
         if not responses or not analysis_results:
-            return jsonify({"error": "⚠️ Failed to analyze the CSV data"}), 500
+            return jsonify({"error": "Failed to analyze the CSV data"}), 500
 
         # Step 2: Use final_output to process the responses
         result_dict = final_output(responses, analysis_results)
@@ -671,7 +671,7 @@ def ask_llm():
     
     except Exception as e:
         print(f"Exception in ask_llm: {str(e)}")
-        return jsonify({"error": f"❌ Exception occurred: {str(e)}"}), 500
+        return jsonify({"error": f"Exception occurred: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
