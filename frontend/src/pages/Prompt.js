@@ -48,6 +48,9 @@ export default function Prompt() {
   
     reader.onload = async (event) => {
       const fileContent = event.target.result;
+      
+      // Convert content to base64 for reliable transmission
+      const encodedContent = btoa(unescape(encodeURIComponent(fileContent)));
   
       // Upload to backend
       const formData = new FormData();
@@ -69,8 +72,8 @@ export default function Prompt() {
           return prev;
         });
   
-        // Send to LLM
-        await sendToLLM(fileContent, backendData.filePath);
+        // Send to LLM with encoded content
+        await sendToLLM(encodedContent, backendData.filePath);
       } catch (error) {
         console.error('❌ Upload error:', error);
         setResponseText(`Error: ${error.message}`);
@@ -82,20 +85,34 @@ export default function Prompt() {
 
   const sendToLLM = async (content, filePath = '') => {
     try {
+      console.log("Sending request to LLM API...");
       const llmResponse = await fetch('http://localhost:8000/ask_llm', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ file: content }),
+        body: JSON.stringify({ file: content, isBase64: true }),
       });
+      console.log("Received response from LLM API:", llmResponse);
+  
+      if (!llmResponse.ok) {
+        const errorText = await llmResponse.text();
+        console.error("Error response text:", errorText);
+        throw new Error(`Server error (${llmResponse.status}): ${errorText}`);
+      }
   
       const llmData = await llmResponse.json();
-      console.log('🧠 LLM response:', llmData);
-  
-      setResponseText(`🧠 LLM response: ${llmData.response}${filePath ? `\n✅ File saved at: ${filePath}` : ''}`);
+      console.log("Parsed response data:", llmData);
+      
+      if (llmData && llmData.response) {
+        console.log("Setting response text:", llmData.response);
+        setResponseText(llmData.response);
+      } else {
+        console.error("Unexpected response format:", llmData);
+        setResponseText('Error: Received unexpected response format from server');
+      }
     } catch (error) {
-      console.error('❌ LLM error:', error);
+      console.error("LLM API error:", error);
       setResponseText(`Error: ${error.message}`);
     }
   };
