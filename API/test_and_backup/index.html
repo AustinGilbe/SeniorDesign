@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Test</title>
+</head>
+<body>
+  <h1>API Test</h1>
+  <input type="file" id="fileInput" accept=".csv">
+  <div id="response">Select a CSV file</div>
+  
+  <script>
+    document.getElementById('fileInput').addEventListener('change', handleFile);
+    
+    function handleFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const content = e.target.result;
+        const encodedContent = btoa(unescape(encodeURIComponent(content)));
+        
+        try {
+          document.getElementById('response').innerText = "Sending to API...";
+          
+          const response = await fetch('http://localhost:8000/ask_llm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file: encodedContent, isBase64: true })
+          });
+          
+          const data = await response.json();
+          document.getElementById('response').innerText = data.response;
+        } catch (error) {
+          document.getElementById('response').innerText = "Error: " + error.message;
+        }
+      };
+      
+      reader.readAsText(file);
+    }
+  </script>
+</body>
+</html>

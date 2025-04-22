@@ -612,39 +612,65 @@ def final_output(responses, analysis_results):
     }
 
 @app.route('/ask_llm', methods=['POST'])
-@app.route('/ask_llm', methods=['POST'])
 def ask_llm():
-    """Handle API request with CSV file upload"""
-    if 'file' not in request.files:
-        return jsonify({"error": "⚠️ No file uploaded."}), 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "⚠️ No selected file."}), 400
-
+    file_contents = None
+    
+    # Check if content is JSON format
+    if request.is_json:
+        data = request.get_json()
+        if 'file' not in data:
+            return jsonify({"error": "⚠️ No file content provided."}), 400
+        
+        file_contents = data['file']
+        # Handle base64 encoded content
+        if data.get('isBase64', False):
+            import base64
+            try:
+                file_contents = base64.b64decode(file_contents).decode('utf-8')
+            except Exception as e:
+                return jsonify({"error": f"⚠️ Failed to decode base64 content: {str(e)}"}), 400
+    
+    # Check if content is form data with file
+    elif 'file' in request.files:
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({"error": "⚠️ No file selected."}), 400
+        
+        try:
+            file_contents = file.read().decode('utf-8')
+        except Exception as e:
+            return jsonify({"error": f"⚠️ Failed to read file: {str(e)}"}), 400
+    
+    else:
+        return jsonify({"error": "⚠️ Expected JSON data or file upload."}), 400
+    
     try:
-        # Read the uploaded file
-        decoded_file = StringIO(file.read().decode('utf-8'))
+        # Use StringIO to simulate a file object for parsing
+        decoded_file = StringIO(file_contents)
         parsed = parse_csv_log(decoded_file)
 
-        if parsed["row_count"] == 0:
+        if parsed is None or parsed.get("row_count", 0) == 0:
             return jsonify({"error": "⚠️ CSV log appears empty or invalid."}), 400
 
         print(f"Received file with {parsed['row_count']} rows")
 
         # Step 1: Run multi-query with analysis
-        responses, analysis_results = multi_query(decoded_file.getvalue())
+        responses, analysis_results = multi_query(file_contents)
+
+        if not responses or not analysis_results:
+            return jsonify({"error": "⚠️ Failed to analyze the CSV data"}), 500
 
         # Step 2: Use final_output to process the responses
         result_dict = final_output(responses, analysis_results)
 
         final_result = f"CLASSIFICATION: {result_dict['classification']}\nDESCRIPTION: {result_dict['description']}\nCONFIDENCE: {result_dict['confidence']}%"
         print(f"Final classification: {final_result}")
-
         print(f"Sending response: {final_result}")
+        
         return jsonify({"response": final_result})
     
     except Exception as e:
+        print(f"Exception in ask_llm: {str(e)}")
         return jsonify({"error": f"❌ Exception occurred: {str(e)}"}), 500
 
 if __name__ == '__main__':
