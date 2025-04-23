@@ -1,6 +1,7 @@
 for i in {1..50}
 do
     CSV_FILE="../../Data2/Logs2/bd/bd_simulation_log_$i.csv"
+    echo "Testing $CSV_FILE"
     curl -s -X POST http://127.0.0.1:8000/ask_llm \
      -F "file=@${CSV_FILE}" > temp_response.json
     cat temp_response.json | awk -F'CLASSIFICATION: ' '/CLASSIFICATION:/ {

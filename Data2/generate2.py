@@ -100,7 +100,7 @@ os.makedirs("./Data2/Logs2", exist_ok=True)
 
 # Run simulation for each attack type, 10 times each
 for attack_type in ATTACK_TYPES:
-    for i in range(10):
+    for i in range(50):
         start_time = datetime(2025, 4, 1, 0, 0, 0)
         battery_level = 3.5
         data = []
