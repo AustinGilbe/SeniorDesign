@@ -515,7 +515,7 @@ def multi_query(log):
     
     # Create a smart prompt using the analysis results
     smart_prompt = create_smart_prompt(log, analysis_results)
-    print(smart_prompt)
+    # print(smart_prompt)
     
     # Run multiple queries with the smart prompt
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
@@ -526,12 +526,12 @@ def multi_query(log):
             except Exception as e:
                 print(f"Thread error: {e}")
                 responses.append(f"Error in thread: {str(e)}")
-    for i, response in enumerate(responses):
-        print(f"Response {i+1}:")
-        print(response)
-        print(f"Extracted classification: {extract_classification(response)}")
-        print(f"Extracted confidence: {extract_confidence(response)}")
-        print("---")
+    # for i, response in enumerate(responses):
+    #     print(f"Response {i+1}:")
+    #     print(response)
+    #     print(f"Extracted classification: {extract_classification(response)}")
+    #     print(f"Extracted confidence: {extract_confidence(response)}")
+    #     print("---")
     return responses, analysis_results
 
 def final_output(responses, analysis_results):
@@ -665,7 +665,7 @@ def ask_llm():
 
         final_result = f"CLASSIFICATION: {result_dict['classification']}\nDESCRIPTION: {result_dict['description']}\nCONFIDENCE: {result_dict['confidence']}%"
         print(f"Final classification: {final_result}")
-        print(f"Sending response: {final_result}")
+        # print(f"Sending response: {final_result}")
         
         return jsonify({"response": final_result})
     
