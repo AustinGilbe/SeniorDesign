@@ -11,7 +11,7 @@ from io import TextIOWrapper
 from datetime import datetime
 from datetime import timedelta
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 app = Flask(__name__)
 CORS(app)
@@ -349,11 +349,12 @@ def extract_confidence(response):
     return int(match.group(1)) if match else 0
 
 def query_openai(prompt, max_tokens=200, temperature=0.1):
+
     try:
-        # Replace smart quotes with straight quotes
-        prompt = prompt.replace('\u201c', '"').replace('\u201d', '"')
-        prompt = prompt.replace('\u2018', "'").replace('\u2019', "'")
-        
+        # Replace all smart quotes and other common non-ASCII characters
+
+        prompt = prompt.encode('ascii', errors='ignore').decode('ascii')
+
         response = client.chat.completions.create(
             model="gpt-4-turbo",
             messages=[{"role": "user", "content": prompt}],
